@@ -4,6 +4,7 @@ import {
   useColorScheme,
   View,
   FlatList,
+  Text,
 } from 'react-native';
 import React from 'react';
 import MyText from '../MyText';
@@ -23,6 +24,7 @@ const Pinned = () => {
       date: new Date(),
       time: new Date(),
       color: 'red',
+      pinned: false,
     },
     {
       id: 2,
@@ -31,6 +33,7 @@ const Pinned = () => {
       date: new Date(),
       time: new Date(),
       color: 'cyan',
+      pinned: false,
     },
     {
       id: 3,
@@ -39,6 +42,7 @@ const Pinned = () => {
       date: new Date(),
       time: new Date(),
       color: 'teal',
+      pinned: false,
     },
     {
       id: 4,
@@ -47,6 +51,7 @@ const Pinned = () => {
       date: new Date(),
       time: new Date(),
       color: 'purple',
+      pinned: false,
     },
     {
       id: 5,
@@ -55,6 +60,7 @@ const Pinned = () => {
       date: new Date(),
       time: new Date(),
       color: 'orange',
+      pinned: false,
     },
   ];
 

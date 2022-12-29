@@ -4,6 +4,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationContainer} from '@react-navigation/native';
 import {RootStackParamList} from './navTypes';
 import HomeScreen from '../screens/HomeScreen';
+import AddScreen from '../screens/AddScreen';
 
 const RootStack = () => {
   const Stack = createStackNavigator<RootStackParamList>();
@@ -14,6 +15,7 @@ const RootStack = () => {
           headerShown: false,
         }}>
         <Stack.Screen name="HomeScreen" component={HomeScreen} />
+        <Stack.Screen name="AddScreen" component={AddScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -23,6 +23,7 @@ const Reminders = () => {
       date: new Date(),
       time: new Date(),
       color: 'red',
+      pinned: false,
     },
     {
       id: 2,
@@ -31,6 +32,7 @@ const Reminders = () => {
       date: new Date(),
       time: new Date(),
       color: 'cyan',
+      pinned: false,
     },
     {
       id: 3,
@@ -39,6 +41,7 @@ const Reminders = () => {
       date: new Date(),
       time: new Date(),
       color: 'teal',
+      pinned: false,
     },
     {
       id: 4,
@@ -47,6 +50,7 @@ const Reminders = () => {
       date: new Date(),
       time: new Date(),
       color: 'purple',
+      pinned: false,
     },
     {
       id: 5,
@@ -55,6 +59,7 @@ const Reminders = () => {
       date: new Date(),
       time: new Date(),
       color: 'orange',
+      pinned: false,
     },
   ];
   const renderItem: ListRenderItem<ItemType> = ({item, index}) => (

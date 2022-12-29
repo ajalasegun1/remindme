@@ -1,3 +1,9 @@
+import {StackNavigationProp} from '@react-navigation/stack';
 export type RootStackParamList = {
-  HomeScreen: undefined;
+  HomeScreen: HomeScreenNavProps;
+  AddScreen: undefined;
+};
+
+export type HomeScreenNavProps = {
+  navigation: StackNavigationProp<RootStackParamList, 'HomeScreen'>;
 };

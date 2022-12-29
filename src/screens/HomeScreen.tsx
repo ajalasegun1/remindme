@@ -6,6 +6,7 @@ import {
   Text,
   View,
   useColorScheme,
+  Pressable,
 } from 'react-native';
 import React, {useState} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
@@ -17,8 +18,11 @@ import {HomeType} from '../components/Homescreen/homeScreenTypes';
 import {ItemType} from '../components/Homescreen/homeScreenTypes';
 import {dark, light} from '../theme/colors';
 import dayjs from 'dayjs';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import {StackNavigationProp} from '@react-navigation/stack';
+import {HomeScreenNavProps, RootStackParamList} from '../navigation/navTypes';
 
-const HomeScreen = () => {
+const HomeScreen = ({navigation}: HomeScreenNavProps) => {
   const theme = useColorScheme();
   const isDark = theme === 'dark';
   const feat = [
@@ -29,6 +33,7 @@ const HomeScreen = () => {
       date: new Date(),
       time: new Date(),
       color: 'red',
+      pinned: false,
     },
     {
       id: 2,
@@ -37,6 +42,7 @@ const HomeScreen = () => {
       date: new Date(),
       time: new Date(),
       color: 'cyan',
+      pinned: false,
     },
     {
       id: 3,
@@ -45,6 +51,7 @@ const HomeScreen = () => {
       date: new Date(),
       time: new Date(),
       color: 'teal',
+      pinned: false,
     },
     {
       id: 4,
@@ -53,6 +60,7 @@ const HomeScreen = () => {
       date: new Date(),
       time: new Date(),
       color: 'purple',
+      pinned: false,
     },
     {
       id: 5,
@@ -61,6 +69,7 @@ const HomeScreen = () => {
       date: new Date(),
       time: new Date(),
       color: 'orange',
+      pinned: false,
     },
   ];
   const renderItem: ListRenderItem<ItemType> = ({item, index}) => (
@@ -100,6 +109,11 @@ const HomeScreen = () => {
         numColumns={2}
         showsVerticalScrollIndicator={false}
       />
+      <Pressable
+        style={styles.add}
+        onPress={() => navigation.push('AddScreen')}>
+        <Ionicons name="add" size={30} color="white" />
+      </Pressable>
     </MySafeContainer>
   );
 };
@@ -140,5 +154,26 @@ const styles = StyleSheet.create({
     width: '60%',
     padding: 3,
     borderRadius: 6,
+  },
+  add: {
+    position: 'absolute',
+    bottom: 50,
+    right: 20,
+    backgroundColor: 'teal',
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    alignItems: 'center',
+    justifyContent: 'center',
+
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    shadowOpacity: 0.29,
+    shadowRadius: 4.65,
+
+    elevation: 7,
   },
 });
