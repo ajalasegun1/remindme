@@ -1,24 +1,18 @@
 import {
-  FlatList,
   ListRenderItem,
-  ScrollView,
   StyleSheet,
-  Text,
-  View,
   useColorScheme,
+  View,
+  FlatList,
 } from 'react-native';
-import React, {useState} from 'react';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import MyText from '../components/MyText';
-import Pinned from '../components/Homescreen/Pinned';
-import Reminders from '../components/Homescreen/Reminders';
-import MySafeContainer from '../components/MySafeContainer';
-import {HomeType} from '../components/Homescreen/homeScreenTypes';
-import {ItemType} from '../components/Homescreen/homeScreenTypes';
-import {dark, light} from '../theme/colors';
+import React from 'react';
+import MyText from '../MyText';
+import {bgColors, dark, light} from '../../theme/colors';
+// import {FlatList} from 'react-native-gesture-handler';
+import {ItemType} from './homeScreenTypes';
 import dayjs from 'dayjs';
 
-const HomeScreen = () => {
+const Reminders = () => {
   const theme = useColorScheme();
   const isDark = theme === 'dark';
   const feat = [
@@ -81,45 +75,31 @@ const HomeScreen = () => {
       </MyText>
     </View>
   );
-  const headerComponent = () => (
-    <>
-      <Pinned />
-      <MyText style={[styles.text2, {color: light.secondaryText}]}>
+  return (
+    <View style={styles.container}>
+      <MyText style={[{color: light.secondaryText}, styles.text]}>
         Upcoming
       </MyText>
-    </>
-  );
-  return (
-    <MySafeContainer style={styles.container}>
-      <MyText style={styles.text}>Reminders</MyText>
       <FlatList
         data={feat}
         renderItem={renderItem}
-        ListHeaderComponent={headerComponent}
         keyExtractor={item => item.id.toString()}
         numColumns={2}
-        showsVerticalScrollIndicator={false}
       />
-    </MySafeContainer>
+    </View>
   );
 };
 
-export default HomeScreen;
+export default Reminders;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    paddingHorizontal: 8,
+    marginVertical: 5,
   },
   text: {
-    fontSize: 30,
-    fontWeight: 'bold',
-  },
-  text2: {
     textTransform: 'uppercase',
     fontWeight: '600',
     textAlign: 'center',
-    marginVertical: 20,
   },
   item: {
     flex: 1,

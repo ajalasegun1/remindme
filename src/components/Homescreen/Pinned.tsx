@@ -1,8 +1,14 @@
-import {ListRenderItem, StyleSheet, useColorScheme, View} from 'react-native';
+import {
+  ListRenderItem,
+  StyleSheet,
+  useColorScheme,
+  View,
+  FlatList,
+} from 'react-native';
 import React from 'react';
 import MyText from '../MyText';
 import {bgColors, dark, light} from '../../theme/colors';
-import {FlatList} from 'react-native-gesture-handler';
+// import {FlatList} from 'react-native-gesture-handler';
 import {ItemType} from './homeScreenTypes';
 import dayjs from 'dayjs';
 
@@ -52,8 +58,6 @@ const Pinned = () => {
     },
   ];
 
-  const MYCOLOR = bgColors.two;
-
   const renderItem: ListRenderItem<ItemType> = ({item, index}) => (
     <View style={[styles.item, {backgroundColor: item.color}]}>
       <MyText style={styles.title} numberOfLines={2}>
@@ -68,7 +72,7 @@ const Pinned = () => {
           styles.timeContainer,
           {borderColor: isDark ? dark.primaryText : light.primaryText},
         ]}>
-        {dayjs(item.date).format('MMM DD')}, {dayjs(item.time).format('H:m')}
+        {dayjs(item.date).format('MMM DD')}, {dayjs(item.time).format('H:mm')}
       </MyText>
     </View>
   );
@@ -96,6 +100,8 @@ const styles = StyleSheet.create({
   text: {
     textTransform: 'uppercase',
     fontWeight: '600',
+    textAlign: 'center',
+    marginVertical: 10,
   },
   item: {
     flex: 1,

@@ -6,3 +6,5 @@ export type ItemType = {
   time: Date;
   color: string;
 };
+
+export type HomeType = string[];
