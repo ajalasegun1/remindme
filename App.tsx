@@ -10,20 +10,11 @@ import {
 } from 'react-native';
 import MyText from './src/components/MyText';
 import {light, dark} from './src/theme/colors';
+import {SafeAreaProvider} from 'react-native-safe-area-context';
+import RootStack from './src/navigation/RootStack';
 
 const App = () => {
-  return (
-    <SafeAreaView style={styles.container}>
-      <Text style={styles.text}>Hello world!</Text>
-      <MyText>Check</MyText>
-      <View
-        style={{
-          width: '100%',
-          height: '40%',
-          backgroundColor: dark.layer,
-        }}></View>
-    </SafeAreaView>
-  );
+  return <RootStack />;
 };
 
 const styles = StyleSheet.create({

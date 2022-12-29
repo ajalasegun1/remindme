@@ -12,7 +12,7 @@ const MyText = ({children, style, numberOfLines}: Props) => {
   const DARKTEXT = dark.primaryText;
   const LIGHTTEXT = light.primaryText;
   return (
-    <Text style={[{color: isDark ? DARKTEXT : LIGHTTEXT}, style]}>
+    <Text style={[styles.text, {color: isDark ? DARKTEXT : LIGHTTEXT}, style]}>
       {children}
     </Text>
   );
@@ -20,4 +20,8 @@ const MyText = ({children, style, numberOfLines}: Props) => {
 
 export default MyText;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  text: {
+    fontFamily: 'Jost',
+  },
+});
