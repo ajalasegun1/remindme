@@ -8,11 +8,20 @@ import {
   useColorScheme,
   View,
 } from 'react-native';
+import MyText from './src/components/MyText';
+import {light, dark} from './src/theme/colors';
 
 const App = () => {
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.text}>Hello world!</Text>
+      <MyText>Check</MyText>
+      <View
+        style={{
+          width: '100%',
+          height: '40%',
+          backgroundColor: dark.layer,
+        }}></View>
     </SafeAreaView>
   );
 };
