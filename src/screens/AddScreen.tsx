@@ -1,4 +1,12 @@
-import {StyleSheet, Text, View, Pressable, useColorScheme} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Pressable,
+  useColorScheme,
+  Modal,
+  TouchableWithoutFeedback,
+} from 'react-native';
 import React, {useState, useRef, useEffect} from 'react';
 import MySafeContainer from '../components/MySafeContainer';
 import {StackScreenProps} from '@react-navigation/stack';
@@ -8,6 +16,10 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import {TextInput} from 'react-native-gesture-handler';
 import {dark, light} from '../theme/colors';
 import {bgColors} from '../theme/colors';
+import {HEIGHT} from '../constants/dimensions';
+import MyView from '../components/MyView';
+import MyLayerView from '../components/MyLayerView';
+import MyText from '../components/MyText';
 
 type AddScreenProps = StackScreenProps<RootStackParamList, 'AddScreen'>;
 
@@ -18,7 +30,9 @@ const AddScreen = ({navigation}: AddScreenProps) => {
   const theme = useColorScheme();
   const isDark = theme === 'dark';
   const [color, setColor] = useState<string>(one);
+  const [showModal, setShowModal] = useState(true);
   const colorArray = [one, two, three, four];
+
   useEffect(() => {
     titleRef.current?.focus();
   }, []);
@@ -91,6 +105,39 @@ const AddScreen = ({navigation}: AddScreenProps) => {
           ))}
         </View>
       </View>
+      <Modal visible={showModal} transparent={true} animationType={'slide'}>
+        <View style={styles.modalContainer}>
+          <MyView style={styles.modalContent}>
+            <MyLayerView style={styles.items2}>
+              <MyText>Select Date</MyText>
+              <Ionicons
+                name="calendar-outline"
+                size={20}
+                color={isDark ? 'white' : 'black'}
+              />
+            </MyLayerView>
+            <View style={{height: 10}} />
+            <MyLayerView style={styles.items2}>
+              <MyText>Select Time</MyText>
+              <Ionicons
+                name="time-outline"
+                size={20}
+                color={isDark ? 'white' : 'black'}
+              />
+            </MyLayerView>
+            <View style={{height: 40}} />
+            <View style={styles.modalFooter}>
+              <Pressable onPress={() => setShowModal(false)}>
+                <MyText style={styles.cancel}>Close</MyText>
+              </Pressable>
+              <View style={{width: 10}} />
+              <View style={styles.saveBtn}>
+                <MyText style={styles.saveText}>Save</MyText>
+              </View>
+            </View>
+          </MyView>
+        </View>
+      </Modal>
     </MySafeContainer>
   );
 };
@@ -180,5 +227,53 @@ const styles = StyleSheet.create({
     elevation: 7,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  modalContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'rgba(0,0,0,0.5)',
+  },
+  modalContent: {
+    height: HEIGHT / 3,
+    width: '90%',
+    // backgroundColor: 'green',
+    borderRadius: 15,
+    padding: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  items2: {
+    // backgroundColor: 'teal',
+    width: '100%',
+    height: 50,
+    borderRadius: 5,
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  modalFooter: {
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    flexDirection: 'row',
+    // justifyContent: 'flex-end',
+  },
+  cancel: {
+    fontWeight: '500',
+    fontSize: 16,
+  },
+  saveBtn: {
+    backgroundColor: 'teal',
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 6,
+  },
+  saveText: {
+    fontWeight: '800',
+    fontSize: 16,
+    color: 'white',
   },
 });
