@@ -5,6 +5,7 @@ export type ReminderState = Array<{
   notification_id: string;
   id: string;
   title: string;
+  body: string;
   date: Date;
   time: Date;
   pinned: boolean;
@@ -14,6 +15,7 @@ export type PayloadType = {
   notification_id: string;
   id: string;
   title: string;
+  body: string;
   date: Date;
   time: Date;
   pinned: boolean;

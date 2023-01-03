@@ -5,9 +5,8 @@ import {
   Pressable,
   useColorScheme,
   Modal,
-  TouchableWithoutFeedback,
 } from 'react-native';
-import React, {useState, useRef, useEffect} from 'react';
+import React, {useState, useRef, useEffect, useCallback} from 'react';
 import MySafeContainer from '../components/MySafeContainer';
 import {StackScreenProps} from '@react-navigation/stack';
 import {RootStackParamList} from '../navigation/navTypes';
@@ -23,6 +22,7 @@ import MyText from '../components/MyText';
 import DatePicker from 'react-native-date-picker';
 import dayjs from 'dayjs';
 import PushNotification from 'react-native-push-notification';
+import {nanoid} from '@reduxjs/toolkit';
 
 type AddScreenProps = StackScreenProps<RootStackParamList, 'AddScreen'>;
 
@@ -39,23 +39,47 @@ const AddScreen = ({navigation}: AddScreenProps) => {
   const [openDate, setOpenDate] = useState(false);
   const [time, setTime] = useState(new Date());
   const [openTime, setOpenTime] = useState(false);
+  const [title, setTitle] = useState('');
+  const [body, setBody] = useState('');
 
   useEffect(() => {
     titleRef.current?.focus();
+    console.log('IAMHERE');
+    PushNotification.createChannel(
+      {
+        channelId: 'channel-id', // (required)
+        channelName: 'My channel', // (required)
+      },
+      created => console.log(`createChannel returned '${created}'`), // (optional) callback returns whether the channel was created, false means it already existed.
+    );
   }, []);
 
   const createNotification = () => {
     console.log('I was fired!!!');
+    const notification_id = nanoid();
+    const id = nanoid();
     PushNotification.localNotificationSchedule({
       //... You can use all the options from localNotifications
-      message: 'My Notification Message', // (required)
-      date: new Date(Date.now() + 10 * 1000), // in 60 secs
-      allowWhileIdle: false, // (optional) set notification to work while on doze, default: false
+      channelId: 'channel-id',
+      id: id,
+      title: 'You have a reminder',
+      message: title, // (required)
+      date: getAccurateDate(),
 
       /* Android Only Properties */
       repeatTime: 1, // (optional) Increment of configured repeatType. Check 'Repeating Notifications' section for more info.
     });
   };
+  const getAccurateDate = useCallback(() => {
+    const maindate = date;
+    const hours = time.getHours();
+    const minutes = time.getMinutes();
+    maindate.setHours(hours);
+    maindate.setMinutes(minutes);
+    maindate.setSeconds(0);
+    return maindate;
+  }, [date, time]);
+
   return (
     <MySafeContainer style={styles.container}>
       <View style={styles.header}>
@@ -146,7 +170,7 @@ const AddScreen = ({navigation}: AddScreenProps) => {
               onPress={() => setOpenTime(true)}
               style={{width: '100%'}}>
               <MyLayerView style={styles.items2}>
-                <MyText>{dayjs(date).format('h:m a')}</MyText>
+                <MyText>{dayjs(time).format('h:m a')}</MyText>
                 <Ionicons
                   name="time-outline"
                   size={20}
@@ -183,12 +207,12 @@ const AddScreen = ({navigation}: AddScreenProps) => {
         <DatePicker
           modal
           mode="time"
-          minimumDate={new Date()}
+          //   minimumDate={new Date()}
           open={openTime}
           date={time}
           onConfirm={date => {
             setOpenTime(false);
-            setDate(date);
+            setTime(date);
           }}
           onCancel={() => {
             setOpenTime(false);
