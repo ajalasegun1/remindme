@@ -22,6 +22,7 @@ import MyLayerView from '../components/MyLayerView';
 import MyText from '../components/MyText';
 import DatePicker from 'react-native-date-picker';
 import dayjs from 'dayjs';
+import PushNotification from 'react-native-push-notification';
 
 type AddScreenProps = StackScreenProps<RootStackParamList, 'AddScreen'>;
 
@@ -42,6 +43,19 @@ const AddScreen = ({navigation}: AddScreenProps) => {
   useEffect(() => {
     titleRef.current?.focus();
   }, []);
+
+  const createNotification = () => {
+    console.log('I was fired!!!');
+    PushNotification.localNotificationSchedule({
+      //... You can use all the options from localNotifications
+      message: 'My Notification Message', // (required)
+      date: new Date(Date.now() + 10 * 1000), // in 60 secs
+      allowWhileIdle: false, // (optional) set notification to work while on doze, default: false
+
+      /* Android Only Properties */
+      repeatTime: 1, // (optional) Increment of configured repeatType. Check 'Repeating Notifications' section for more info.
+    });
+  };
   return (
     <MySafeContainer style={styles.container}>
       <View style={styles.header}>
@@ -94,7 +108,7 @@ const AddScreen = ({navigation}: AddScreenProps) => {
           {backgroundColor: isDark ? dark.background : light.background},
         ]}>
         <View style={styles.btnHolder}>
-          <Pressable style={styles.btn}>
+          <Pressable style={styles.btn} onPress={() => createNotification()}>
             <Ionicons name="checkmark" size={20} color="#fff" />
           </Pressable>
         </View>
