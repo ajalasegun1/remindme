@@ -20,6 +20,8 @@ import {HEIGHT} from '../constants/dimensions';
 import MyView from '../components/MyView';
 import MyLayerView from '../components/MyLayerView';
 import MyText from '../components/MyText';
+import DatePicker from 'react-native-date-picker';
+import dayjs from 'dayjs';
 
 type AddScreenProps = StackScreenProps<RootStackParamList, 'AddScreen'>;
 
@@ -32,6 +34,10 @@ const AddScreen = ({navigation}: AddScreenProps) => {
   const [color, setColor] = useState<string>(one);
   const [showModal, setShowModal] = useState(true);
   const colorArray = [one, two, three, four];
+  const [date, setDate] = useState(new Date());
+  const [openDate, setOpenDate] = useState(false);
+  const [time, setTime] = useState(new Date());
+  const [openTime, setOpenTime] = useState(false);
 
   useEffect(() => {
     titleRef.current?.focus();
@@ -108,23 +114,32 @@ const AddScreen = ({navigation}: AddScreenProps) => {
       <Modal visible={showModal} transparent={true} animationType={'slide'}>
         <View style={styles.modalContainer}>
           <MyView style={styles.modalContent}>
-            <MyLayerView style={styles.items2}>
-              <MyText>Select Date</MyText>
-              <Ionicons
-                name="calendar-outline"
-                size={20}
-                color={isDark ? 'white' : 'black'}
-              />
-            </MyLayerView>
+            <MyText style={styles.heading}>When should we remind you?</MyText>
+            <Pressable
+              onPress={() => setOpenDate(true)}
+              style={{width: '100%'}}>
+              <MyLayerView style={styles.items2}>
+                <MyText>{dayjs(date).format('MMMM D')}</MyText>
+                <Ionicons
+                  name="calendar-outline"
+                  size={20}
+                  color={isDark ? 'white' : 'black'}
+                />
+              </MyLayerView>
+            </Pressable>
             <View style={{height: 10}} />
-            <MyLayerView style={styles.items2}>
-              <MyText>Select Time</MyText>
-              <Ionicons
-                name="time-outline"
-                size={20}
-                color={isDark ? 'white' : 'black'}
-              />
-            </MyLayerView>
+            <Pressable
+              onPress={() => setOpenTime(true)}
+              style={{width: '100%'}}>
+              <MyLayerView style={styles.items2}>
+                <MyText>{dayjs(date).format('h:m a')}</MyText>
+                <Ionicons
+                  name="time-outline"
+                  size={20}
+                  color={isDark ? 'white' : 'black'}
+                />
+              </MyLayerView>
+            </Pressable>
             <View style={{height: 40}} />
             <View style={styles.modalFooter}>
               <Pressable onPress={() => setShowModal(false)}>
@@ -137,6 +152,34 @@ const AddScreen = ({navigation}: AddScreenProps) => {
             </View>
           </MyView>
         </View>
+        <DatePicker
+          modal
+          mode="date"
+          minimumDate={new Date()}
+          open={openDate}
+          date={date}
+          onConfirm={date => {
+            setOpenDate(false);
+            setDate(date);
+          }}
+          onCancel={() => {
+            setOpenDate(false);
+          }}
+        />
+        <DatePicker
+          modal
+          mode="time"
+          minimumDate={new Date()}
+          open={openTime}
+          date={time}
+          onConfirm={date => {
+            setOpenTime(false);
+            setDate(date);
+          }}
+          onCancel={() => {
+            setOpenTime(false);
+          }}
+        />
       </Modal>
     </MySafeContainer>
   );
@@ -275,5 +318,10 @@ const styles = StyleSheet.create({
     fontWeight: '800',
     fontSize: 16,
     color: 'white',
+  },
+  heading: {
+    fontWeight: '700',
+    fontSize: 22,
+    marginBottom: 20,
   },
 });
