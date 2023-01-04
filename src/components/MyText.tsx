@@ -12,7 +12,9 @@ const MyText = ({children, style, numberOfLines}: Props) => {
   const DARKTEXT = dark.primaryText;
   const LIGHTTEXT = light.primaryText;
   return (
-    <Text style={[styles.text, {color: isDark ? DARKTEXT : LIGHTTEXT}, style]}>
+    <Text
+      style={[styles.text, {color: isDark ? DARKTEXT : LIGHTTEXT}, style]}
+      numberOfLines={numberOfLines}>
       {children}
     </Text>
   );

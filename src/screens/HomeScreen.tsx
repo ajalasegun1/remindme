@@ -1,30 +1,36 @@
 import {
   FlatList,
   ListRenderItem,
-  ScrollView,
   StyleSheet,
-  Text,
   View,
   useColorScheme,
   Pressable,
 } from 'react-native';
-import React, {useState} from 'react';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import React, {useEffect, useState} from 'react';
 import MyText from '../components/MyText';
 import Pinned from '../components/Homescreen/Pinned';
-import Reminders from '../components/Homescreen/Reminders';
 import MySafeContainer from '../components/MySafeContainer';
-import {HomeType} from '../components/Homescreen/homeScreenTypes';
-import {ItemType} from '../components/Homescreen/homeScreenTypes';
+import {
+  ItemType,
+  RemindersItemType,
+  ReminderListType,
+} from '../components/Homescreen/homeScreenTypes';
 import {dark, light} from '../theme/colors';
 import dayjs from 'dayjs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {StackNavigationProp} from '@react-navigation/stack';
-import {HomeScreenNavProps, RootStackParamList} from '../navigation/navTypes';
+import {HomeScreenNavProps} from '../navigation/navTypes';
+import {useSelector} from 'react-redux';
+import {RootState} from '../redux/app/store';
 
 const HomeScreen = ({navigation}: HomeScreenNavProps) => {
   const theme = useColorScheme();
   const isDark = theme === 'dark';
+  const reminders = useSelector((state: RootState) => state.reminders);
+  console.log({reminders});
+  // const [remindersList, setRemindersList] = useState<ReminderListType>();
+  // useEffect(() => {
+  //   setRemindersList(reminders);
+  // }, [reminders]);
   const feat = [
     {
       id: 1,
@@ -72,8 +78,9 @@ const HomeScreen = ({navigation}: HomeScreenNavProps) => {
       pinned: false,
     },
   ];
-  const renderItem: ListRenderItem<ItemType> = ({item, index}) => (
-    <View style={[styles.item, {backgroundColor: item.color}]}>
+
+  const renderItem: ListRenderItem<RemindersItemType> = ({item, index}) => (
+    <View style={[styles.item, {backgroundColor: item.backgroundColor}]}>
       <MyText style={styles.title} numberOfLines={2}>
         {item.title}
       </MyText>
@@ -81,11 +88,7 @@ const HomeScreen = ({navigation}: HomeScreenNavProps) => {
         {item.body}
       </MyText>
 
-      <MyText
-        style={[
-          styles.timeContainer,
-          {borderColor: isDark ? dark.primaryText : light.primaryText},
-        ]}>
+      <MyText style={[styles.timeContainer, {borderColor: 'white'}]}>
         {dayjs(item.date).format('MMM DD')}, {dayjs(item.time).format('H:mm')}
       </MyText>
     </View>
@@ -102,7 +105,7 @@ const HomeScreen = ({navigation}: HomeScreenNavProps) => {
     <MySafeContainer style={styles.container}>
       <MyText style={styles.text}>Reminders</MyText>
       <FlatList
-        data={feat}
+        data={reminders}
         renderItem={renderItem}
         ListHeaderComponent={headerComponent}
         keyExtractor={item => item.id.toString()}
@@ -144,9 +147,11 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     fontWeight: '600',
+    color: 'white',
   },
   body: {
     fontSize: 15,
+    color: 'white',
   },
   timeContainer: {
     borderColor: '#d3d3d3',
@@ -154,6 +159,7 @@ const styles = StyleSheet.create({
     width: '60%',
     padding: 3,
     borderRadius: 6,
+    color: 'white',
   },
   add: {
     position: 'absolute',

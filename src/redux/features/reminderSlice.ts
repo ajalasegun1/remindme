@@ -31,7 +31,7 @@ export const reminderSlice = createSlice({
   reducers: {
     addReminder: (state, action: PayloadAction<PayloadType>) => {
       const {payload} = action;
-      state.push(payload);
+      state.unshift(payload);
     },
   },
 });

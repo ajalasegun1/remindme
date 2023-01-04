@@ -72,6 +72,7 @@ const AddScreen = ({navigation}: AddScreenProps) => {
       title: 'You have a reminder',
       message: title, // (required)
       date: getAccurateDate(),
+      userInfo: {notification_id},
 
       /* Android Only Properties */
       repeatTime: 1, // (optional) Increment of configured repeatType. Check 'Repeating Notifications' section for more info.
@@ -151,7 +152,7 @@ const AddScreen = ({navigation}: AddScreenProps) => {
         placeholder="Title"
         placeholderTextColor={'darkgrey'}
         numberOfLines={1}
-        maxLength={20}
+        maxLength={30}
         returnKeyType="next"
         onSubmitEditing={() => bodyRef.current?.focus()}
       />
