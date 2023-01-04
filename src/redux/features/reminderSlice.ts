@@ -6,9 +6,10 @@ export type ReminderState = Array<{
   id: string;
   title: string;
   body: string;
-  date: Date;
-  time: Date;
+  date: string;
+  time: string;
   pinned: boolean;
+  backgroundColor: string;
 }>;
 
 export type PayloadType = {
@@ -16,9 +17,10 @@ export type PayloadType = {
   id: string;
   title: string;
   body: string;
-  date: Date;
-  time: Date;
+  date: string;
+  time: string;
   pinned: boolean;
+  backgroundColor: string;
 };
 
 const initialState: ReminderState = [];

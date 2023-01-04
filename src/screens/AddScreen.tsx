@@ -5,6 +5,7 @@ import {
   Pressable,
   useColorScheme,
   Modal,
+  Alert,
 } from 'react-native';
 import React, {useState, useRef, useEffect, useCallback} from 'react';
 import MySafeContainer from '../components/MySafeContainer';
@@ -23,6 +24,8 @@ import DatePicker from 'react-native-date-picker';
 import dayjs from 'dayjs';
 import PushNotification from 'react-native-push-notification';
 import {nanoid} from '@reduxjs/toolkit';
+import {addReminder} from '../redux/features/reminderSlice';
+import {useDispatch} from 'react-redux';
 
 type AddScreenProps = StackScreenProps<RootStackParamList, 'AddScreen'>;
 
@@ -33,7 +36,7 @@ const AddScreen = ({navigation}: AddScreenProps) => {
   const theme = useColorScheme();
   const isDark = theme === 'dark';
   const [color, setColor] = useState<string>(one);
-  const [showModal, setShowModal] = useState(true);
+  const [showModal, setShowModal] = useState(false);
   const colorArray = [one, two, three, four];
   const [date, setDate] = useState(new Date());
   const [openDate, setOpenDate] = useState(false);
@@ -41,10 +44,10 @@ const AddScreen = ({navigation}: AddScreenProps) => {
   const [openTime, setOpenTime] = useState(false);
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
+  const dispatch = useDispatch();
 
   useEffect(() => {
     titleRef.current?.focus();
-    console.log('IAMHERE');
     PushNotification.createChannel(
       {
         channelId: 'channel-id', // (required)
@@ -55,13 +58,17 @@ const AddScreen = ({navigation}: AddScreenProps) => {
   }, []);
 
   const createNotification = () => {
-    console.log('I was fired!!!');
+    // console.log('I was fired!!!');
     const notification_id = nanoid();
     const id = nanoid();
+    compareDates();
+
+    if (!compareDates()) return Alert.alert('You have to select a future date');
+
     PushNotification.localNotificationSchedule({
       //... You can use all the options from localNotifications
       channelId: 'channel-id',
-      id: id,
+      id: notification_id,
       title: 'You have a reminder',
       message: title, // (required)
       date: getAccurateDate(),
@@ -69,6 +76,28 @@ const AddScreen = ({navigation}: AddScreenProps) => {
       /* Android Only Properties */
       repeatTime: 1, // (optional) Increment of configured repeatType. Check 'Repeating Notifications' section for more info.
     });
+
+    const payload = {
+      notification_id,
+      id,
+      title,
+      body,
+      date: dayjs(date).toISOString(),
+      time: dayjs(time).toISOString(),
+      pinned: false,
+      backgroundColor: color,
+    };
+    dispatch(addReminder(payload));
+    setShowModal(false);
+    setTimeout(() => {
+      Alert.alert('Reminder Created!', '', [
+        {
+          text: 'Ok',
+          onPress: () => navigation.pop(),
+          style: 'cancel',
+        },
+      ]);
+    }, 500);
   };
   const getAccurateDate = useCallback(() => {
     const maindate = date;
@@ -80,6 +109,18 @@ const AddScreen = ({navigation}: AddScreenProps) => {
     return maindate;
   }, [date, time]);
 
+  const compareDates = () => {
+    // console.log(dayjs().isBefore(dayjs(getAccurateDate())));
+    return dayjs().isBefore(dayjs(getAccurateDate()));
+  };
+
+  const openModal = () => {
+    if (!title && !body) {
+      Alert.alert('Please enter the tile and body of your reminder');
+      return;
+    }
+    setShowModal(true);
+  };
   return (
     <MySafeContainer style={styles.container}>
       <View style={styles.header}>
@@ -105,6 +146,8 @@ const AddScreen = ({navigation}: AddScreenProps) => {
           {color: isDark ? dark.primaryText : light.primaryText},
         ]}
         ref={titleRef}
+        value={title}
+        onChangeText={val => setTitle(val)}
         placeholder="Title"
         placeholderTextColor={'darkgrey'}
         numberOfLines={1}
@@ -118,6 +161,8 @@ const AddScreen = ({navigation}: AddScreenProps) => {
           {color: isDark ? dark.primaryText : light.primaryText},
         ]}
         ref={bodyRef}
+        value={body}
+        onChangeText={val => setBody(val)}
         placeholder="Body"
         placeholderTextColor={'darkgrey'}
         multiline
@@ -132,7 +177,7 @@ const AddScreen = ({navigation}: AddScreenProps) => {
           {backgroundColor: isDark ? dark.background : light.background},
         ]}>
         <View style={styles.btnHolder}>
-          <Pressable style={styles.btn} onPress={() => createNotification()}>
+          <Pressable style={styles.btn} onPress={() => openModal()}>
             <Ionicons name="checkmark" size={20} color="#fff" />
           </Pressable>
         </View>
@@ -170,7 +215,7 @@ const AddScreen = ({navigation}: AddScreenProps) => {
               onPress={() => setOpenTime(true)}
               style={{width: '100%'}}>
               <MyLayerView style={styles.items2}>
-                <MyText>{dayjs(time).format('h:m a')}</MyText>
+                <MyText>{dayjs(time).format('h:mm a')}</MyText>
                 <Ionicons
                   name="time-outline"
                   size={20}
@@ -184,9 +229,11 @@ const AddScreen = ({navigation}: AddScreenProps) => {
                 <MyText style={styles.cancel}>Close</MyText>
               </Pressable>
               <View style={{width: 10}} />
-              <View style={styles.saveBtn}>
-                <MyText style={styles.saveText}>Save</MyText>
-              </View>
+              <Pressable onPress={() => createNotification()}>
+                <View style={styles.saveBtn}>
+                  <MyText style={styles.saveText}>Save</MyText>
+                </View>
+              </Pressable>
             </View>
           </MyView>
         </View>
