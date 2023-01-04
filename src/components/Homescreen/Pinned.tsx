@@ -10,10 +10,14 @@ import React from 'react';
 import MyText from '../MyText';
 import {bgColors, dark, light} from '../../theme/colors';
 // import {FlatList} from 'react-native-gesture-handler';
-import {ItemType} from './homeScreenTypes';
+import {ItemType, RemindersItemType} from './homeScreenTypes';
 import dayjs from 'dayjs';
+import {useSelector} from 'react-redux';
+import {RootState} from '../../redux/app/store';
 
 const Pinned = () => {
+  const reminders = useSelector((state: RootState) => state.reminders);
+  const pinned = reminders.filter(item => item.pinned === true);
   const theme = useColorScheme();
   const isDark = theme === 'dark';
   const feat = [
@@ -64,8 +68,8 @@ const Pinned = () => {
     },
   ];
 
-  const renderItem: ListRenderItem<ItemType> = ({item, index}) => (
-    <View style={[styles.item, {backgroundColor: item.color}]}>
+  const renderItem: ListRenderItem<RemindersItemType> = ({item, index}) => (
+    <View style={[styles.item, {backgroundColor: item.backgroundColor}]}>
       <MyText style={styles.title} numberOfLines={2}>
         {item.title}
       </MyText>
@@ -73,11 +77,7 @@ const Pinned = () => {
         {item.body}
       </MyText>
 
-      <MyText
-        style={[
-          styles.timeContainer,
-          {borderColor: isDark ? dark.primaryText : light.primaryText},
-        ]}>
+      <MyText style={[styles.timeContainer, {borderColor: 'white'}]}>
         {dayjs(item.date).format('MMM DD')}, {dayjs(item.time).format('H:mm')}
       </MyText>
     </View>
@@ -88,7 +88,7 @@ const Pinned = () => {
         Pinned
       </MyText>
       <FlatList
-        data={feat}
+        data={pinned}
         renderItem={renderItem}
         keyExtractor={item => item.id.toString()}
         numColumns={2}
@@ -118,9 +118,11 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     fontWeight: '600',
+    color: 'white',
   },
   body: {
     fontSize: 15,
+    color: 'white',
   },
   timeContainer: {
     borderColor: '#d3d3d3',
@@ -128,5 +130,6 @@ const styles = StyleSheet.create({
     width: '60%',
     padding: 3,
     borderRadius: 6,
+    color: 'white',
   },
 });

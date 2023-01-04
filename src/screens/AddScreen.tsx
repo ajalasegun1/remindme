@@ -41,6 +41,7 @@ const AddScreen = ({navigation}: AddScreenProps) => {
   const [date, setDate] = useState(new Date());
   const [openDate, setOpenDate] = useState(false);
   const [time, setTime] = useState(new Date());
+  const [pinned, setPinned] = useState(false);
   const [openTime, setOpenTime] = useState(false);
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
@@ -85,7 +86,7 @@ const AddScreen = ({navigation}: AddScreenProps) => {
       body,
       date: dayjs(date).toISOString(),
       time: dayjs(time).toISOString(),
-      pinned: false,
+      pinned,
       backgroundColor: color,
     };
     dispatch(addReminder(payload));
@@ -132,9 +133,9 @@ const AddScreen = ({navigation}: AddScreenProps) => {
             color={isDark ? dark.primaryText : light.primaryText}
           />
         </Pressable>
-        <Pressable hitSlop={40}>
+        <Pressable hitSlop={40} onPress={() => setPinned(!pinned)}>
           <MaterialCommunityIcons
-            name="pin"
+            name={pinned ? 'pin-off' : 'pin'}
             size={25}
             color={isDark ? dark.primaryText : light.primaryText}
           />

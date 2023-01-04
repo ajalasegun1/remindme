@@ -10,11 +10,7 @@ import React, {useEffect, useState} from 'react';
 import MyText from '../components/MyText';
 import Pinned from '../components/Homescreen/Pinned';
 import MySafeContainer from '../components/MySafeContainer';
-import {
-  ItemType,
-  RemindersItemType,
-  ReminderListType,
-} from '../components/Homescreen/homeScreenTypes';
+import {RemindersItemType} from '../components/Homescreen/homeScreenTypes';
 import {dark, light} from '../theme/colors';
 import dayjs from 'dayjs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -26,58 +22,6 @@ const HomeScreen = ({navigation}: HomeScreenNavProps) => {
   const theme = useColorScheme();
   const isDark = theme === 'dark';
   const reminders = useSelector((state: RootState) => state.reminders);
-  console.log({reminders});
-  // const [remindersList, setRemindersList] = useState<ReminderListType>();
-  // useEffect(() => {
-  //   setRemindersList(reminders);
-  // }, [reminders]);
-  const feat = [
-    {
-      id: 1,
-      title: 'Coffee',
-      body: 'Prepare hot coffee for frineds',
-      date: new Date(),
-      time: new Date(),
-      color: 'red',
-      pinned: false,
-    },
-    {
-      id: 2,
-      title: 'Coffee',
-      body: '',
-      date: new Date(),
-      time: new Date(),
-      color: 'cyan',
-      pinned: false,
-    },
-    {
-      id: 3,
-      title: 'Coffee',
-      body: 'Prepare hot coffee for frineds',
-      date: new Date(),
-      time: new Date(),
-      color: 'teal',
-      pinned: false,
-    },
-    {
-      id: 4,
-      title: 'Coffee',
-      body: 'Prepare hot coffee for frineds',
-      date: new Date(),
-      time: new Date(),
-      color: 'purple',
-      pinned: false,
-    },
-    {
-      id: 5,
-      title: 'Coffee',
-      body: '',
-      date: new Date(),
-      time: new Date(),
-      color: 'orange',
-      pinned: false,
-    },
-  ];
 
   const renderItem: ListRenderItem<RemindersItemType> = ({item, index}) => (
     <View style={[styles.item, {backgroundColor: item.backgroundColor}]}>
@@ -95,10 +39,14 @@ const HomeScreen = ({navigation}: HomeScreenNavProps) => {
   );
   const headerComponent = () => (
     <>
-      <Pinned />
-      <MyText style={[styles.text2, {color: light.secondaryText}]}>
-        Upcoming
-      </MyText>
+      {reminders.length > 0 && (
+        <>
+          <Pinned />
+          <MyText style={[styles.text2, {color: light.secondaryText}]}>
+            Upcoming
+          </MyText>
+        </>
+      )}
     </>
   );
   return (
