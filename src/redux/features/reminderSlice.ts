@@ -10,6 +10,7 @@ export type ReminderState = Array<{
   time: string;
   pinned: boolean;
   backgroundColor: string;
+  done: boolean;
 }>;
 
 export type PayloadType = {
@@ -21,7 +22,10 @@ export type PayloadType = {
   time: string;
   pinned: boolean;
   backgroundColor: string;
+  done: boolean;
 };
+
+export type MarkType = string;
 
 const initialState: ReminderState = [];
 
@@ -33,8 +37,24 @@ export const reminderSlice = createSlice({
       const {payload} = action;
       state.unshift(payload);
     },
+    toggleMarkAsDone: (state, action: PayloadAction<MarkType>) => {
+      const {payload} = action;
+      const index = state.findIndex(item => item.notification_id === payload);
+      state[index].done = !state[index].done;
+    },
+    togglePinned: (state, action: PayloadAction<MarkType>) => {
+      const {payload} = action;
+      const index = state.findIndex(item => item.notification_id === payload);
+      state[index].pinned = !state[index].pinned;
+    },
+    deleteReminder: (state, action: PayloadAction<MarkType>) => {
+      const {payload} = action;
+      const index = state.findIndex(item => item.notification_id === payload);
+      state.splice(index, 1);
+    },
   },
 });
 
-export const {addReminder} = reminderSlice.actions;
+export const {addReminder, toggleMarkAsDone, togglePinned, deleteReminder} =
+  reminderSlice.actions;
 export default reminderSlice.reducer;

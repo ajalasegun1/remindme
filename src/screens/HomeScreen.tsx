@@ -5,6 +5,7 @@ import {
   View,
   useColorScheme,
   Pressable,
+  Image,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import MyText from '../components/MyText';
@@ -17,6 +18,8 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import {HomeScreenNavProps} from '../navigation/navTypes';
 import {useSelector} from 'react-redux';
 import {RootState} from '../redux/app/store';
+import MyView from '../components/MyView';
+import emptyImage from '../assets/images/emptyBoy.png';
 
 const HomeScreen = ({navigation}: HomeScreenNavProps) => {
   const theme = useColorScheme();
@@ -24,18 +27,24 @@ const HomeScreen = ({navigation}: HomeScreenNavProps) => {
   const reminders = useSelector((state: RootState) => state.reminders);
 
   const renderItem: ListRenderItem<RemindersItemType> = ({item, index}) => (
-    <View style={[styles.item, {backgroundColor: item.backgroundColor}]}>
-      <MyText style={styles.title} numberOfLines={2}>
-        {item.title}
-      </MyText>
-      <MyText style={styles.body} numberOfLines={2}>
-        {item.body}
-      </MyText>
+    <Pressable
+      onPress={() =>
+        navigation.push('EditScreen', {notification_id: item.notification_id})
+      }
+      style={{flex: 1}}>
+      <View style={[styles.item, {backgroundColor: item.backgroundColor}]}>
+        <MyText style={styles.title} numberOfLines={2}>
+          {item.title}
+        </MyText>
+        <MyText style={styles.body} numberOfLines={2}>
+          {item.body}
+        </MyText>
 
-      <MyText style={[styles.timeContainer, {borderColor: 'white'}]}>
-        {dayjs(item.date).format('MMM DD')}, {dayjs(item.time).format('H:mm')}
-      </MyText>
-    </View>
+        <MyText style={[styles.timeContainer, {borderColor: 'white'}]}>
+          {dayjs(item.date).format('MMM DD')}, {dayjs(item.time).format('H:mm')}
+        </MyText>
+      </View>
+    </Pressable>
   );
   const headerComponent = () => (
     <>
@@ -43,23 +52,31 @@ const HomeScreen = ({navigation}: HomeScreenNavProps) => {
         <>
           <Pinned />
           <MyText style={[styles.text2, {color: light.secondaryText}]}>
-            Upcoming
+            List
           </MyText>
         </>
       )}
     </>
   );
+
   return (
     <MySafeContainer style={styles.container}>
       <MyText style={styles.text}>Reminders</MyText>
-      <FlatList
-        data={reminders}
-        renderItem={renderItem}
-        ListHeaderComponent={headerComponent}
-        keyExtractor={item => item.id.toString()}
-        numColumns={2}
-        showsVerticalScrollIndicator={false}
-      />
+      {reminders.length > 0 ? (
+        <FlatList
+          data={reminders}
+          renderItem={renderItem}
+          ListHeaderComponent={headerComponent}
+          keyExtractor={item => item.id.toString()}
+          numColumns={2}
+          showsVerticalScrollIndicator={false}
+        />
+      ) : (
+        <MyView style={styles.emptyContainer}>
+          <Image source={emptyImage} style={styles.emptyImage} />
+        </MyView>
+      )}
+
       <Pressable
         style={styles.add}
         onPress={() => navigation.push('AddScreen')}>
@@ -129,5 +146,14 @@ const styles = StyleSheet.create({
     shadowRadius: 4.65,
 
     elevation: 7,
+  },
+  emptyContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  emptyImage: {
+    width: 350,
+    height: 350,
   },
 });

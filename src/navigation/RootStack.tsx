@@ -5,6 +5,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {RootStackParamList} from './navTypes';
 import HomeScreen from '../screens/HomeScreen';
 import AddScreen from '../screens/AddScreen';
+import EditScreen from '../screens/EditScreen';
 
 const RootStack = () => {
   const Stack = createStackNavigator<RootStackParamList>();
@@ -16,6 +17,7 @@ const RootStack = () => {
         }}>
         <Stack.Screen name="HomeScreen" component={HomeScreen} />
         <Stack.Screen name="AddScreen" component={AddScreen} />
+        <Stack.Screen name="EditScreen" component={EditScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

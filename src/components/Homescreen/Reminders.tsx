@@ -82,9 +82,7 @@ const Reminders = () => {
   );
   return (
     <View style={styles.container}>
-      <MyText style={[{color: light.secondaryText}, styles.text]}>
-        Upcoming
-      </MyText>
+      <MyText style={[{color: light.secondaryText}, styles.text]}>List</MyText>
       <FlatList
         data={feat}
         renderItem={renderItem}

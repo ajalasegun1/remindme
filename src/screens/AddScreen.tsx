@@ -88,6 +88,7 @@ const AddScreen = ({navigation}: AddScreenProps) => {
       time: dayjs(time).toISOString(),
       pinned,
       backgroundColor: color,
+      done: false,
     };
     dispatch(addReminder(payload));
     setShowModal(false);
