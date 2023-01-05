@@ -10,8 +10,12 @@ import {
 import React, {useEffect, useState} from 'react';
 import MyText from '../components/MyText';
 import Pinned from '../components/Homescreen/Pinned';
+import Done from '../components/Homescreen/Done';
 import MySafeContainer from '../components/MySafeContainer';
-import {RemindersItemType} from '../components/Homescreen/homeScreenTypes';
+import {
+  RemindersItemType,
+  ReminderListType,
+} from '../components/Homescreen/homeScreenTypes';
 import {dark, light} from '../theme/colors';
 import dayjs from 'dayjs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -25,13 +29,19 @@ const HomeScreen = ({navigation}: HomeScreenNavProps) => {
   const theme = useColorScheme();
   const isDark = theme === 'dark';
   const reminders = useSelector((state: RootState) => state.reminders);
+  const [filteredReminder, setFiltered] = useState<ReminderListType>([]);
+
+  useEffect(() => {
+    const filter = reminders.filter(item => !item.done);
+    setFiltered(filter);
+  }, [reminders]);
 
   const renderItem: ListRenderItem<RemindersItemType> = ({item, index}) => (
     <Pressable
       onPress={() =>
         navigation.push('EditScreen', {notification_id: item.notification_id})
       }
-      style={{flex: 1}}>
+      style={{flex: 0.5}}>
       <View style={[styles.item, {backgroundColor: item.backgroundColor}]}>
         <MyText style={styles.title} numberOfLines={2}>
           {item.title}
@@ -51,22 +61,27 @@ const HomeScreen = ({navigation}: HomeScreenNavProps) => {
       {reminders.length > 0 && (
         <>
           <Pinned />
-          <MyText style={[styles.text2, {color: light.secondaryText}]}>
-            List
-          </MyText>
+          {filteredReminder.length > 0 && (
+            <MyText style={[styles.text2, {color: light.secondaryText}]}>
+              List
+            </MyText>
+          )}
         </>
       )}
     </>
   );
+
+  const footerComponent = () => <>{reminders.length > 0 && <Done />}</>;
 
   return (
     <MySafeContainer style={styles.container}>
       <MyText style={styles.text}>Reminders</MyText>
       {reminders.length > 0 ? (
         <FlatList
-          data={reminders}
+          data={filteredReminder}
           renderItem={renderItem}
           ListHeaderComponent={headerComponent}
+          ListFooterComponent={footerComponent}
           keyExtractor={item => item.id.toString()}
           numColumns={2}
           showsVerticalScrollIndicator={false}

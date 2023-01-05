@@ -14,25 +14,24 @@ import {ItemType, RemindersItemType} from './homeScreenTypes';
 import dayjs from 'dayjs';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../redux/app/store';
-import {useNavigation} from '@react-navigation/native';
-import {StackNavigationProp} from '@react-navigation/stack';
 import {RootStackParamList} from '../../navigation/navTypes';
-
+import {StackNavigationProp} from '@react-navigation/stack';
+import {useNavigation} from '@react-navigation/native';
 type NavigationType = StackNavigationProp<RootStackParamList, 'EditScreen'>;
 
-const Pinned = () => {
+const Done = () => {
   const reminders = useSelector((state: RootState) => state.reminders);
-  const pinned = reminders.filter(item => item.pinned === true);
+  const pinned = reminders.filter(item => item.done);
   const theme = useColorScheme();
   const isDark = theme === 'dark';
   const navigation = useNavigation<NavigationType>();
 
   const renderItem: ListRenderItem<RemindersItemType> = ({item, index}) => (
     <Pressable
+      style={{flex: 0.5}}
       onPress={() =>
         navigation.push('EditScreen', {notification_id: item.notification_id})
-      }
-      style={{flex: 0.5}}>
+      }>
       <View style={[styles.item, {backgroundColor: item.backgroundColor}]}>
         <MyText style={styles.title} numberOfLines={2}>
           {item.title}
@@ -52,7 +51,7 @@ const Pinned = () => {
       {pinned.length > 0 && (
         <>
           <MyText style={[{color: light.secondaryText}, styles.text]}>
-            Pinned
+            Done
           </MyText>
           <FlatList
             data={pinned}
@@ -66,7 +65,7 @@ const Pinned = () => {
   );
 };
 
-export default Pinned;
+export default Done;
 
 const styles = StyleSheet.create({
   container: {
