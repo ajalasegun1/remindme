@@ -24,6 +24,7 @@ import {useSelector} from 'react-redux';
 import {RootState} from '../redux/app/store';
 import MyView from '../components/MyView';
 import emptyImage from '../assets/images/emptyBoy.png';
+import PushNotification from 'react-native-push-notification';
 
 const HomeScreen = ({navigation}: HomeScreenNavProps) => {
   const theme = useColorScheme();

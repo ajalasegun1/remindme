@@ -49,30 +49,27 @@ const AddScreen = ({navigation}: AddScreenProps) => {
 
   useEffect(() => {
     titleRef.current?.focus();
-    PushNotification.createChannel(
-      {
-        channelId: 'channel-id', // (required)
-        channelName: 'My channel', // (required)
-      },
-      created => console.log(`createChannel returned '${created}'`), // (optional) callback returns whether the channel was created, false means it already existed.
-    );
   }, []);
+
+  PushNotification.getChannels(function (channel_ids) {
+    console.log({channel_ids}); // ['channel_id_1']
+  });
 
   const createNotification = () => {
     // console.log('I was fired!!!');
-    const notification_id = nanoid();
-    const id = nanoid();
+
     compareDates();
-
+    const notification_id = Math.floor(Math.random() * 50000).toString();
+    const id = nanoid();
     if (!compareDates()) return Alert.alert('You have to select a future date');
-
+    const accurateDate = getAccurateDate();
     PushNotification.localNotificationSchedule({
       //... You can use all the options from localNotifications
       channelId: 'channel-id',
       id: notification_id,
       title: 'You have a reminder',
       message: title, // (required)
-      date: getAccurateDate(),
+      date: accurateDate,
       userInfo: {notification_id},
 
       /* Android Only Properties */
