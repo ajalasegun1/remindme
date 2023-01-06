@@ -23,8 +23,7 @@ import {HomeScreenNavProps} from '../navigation/navTypes';
 import {useSelector} from 'react-redux';
 import {RootState} from '../redux/app/store';
 import MyView from '../components/MyView';
-import emptyImage from '../assets/images/emptyBoy.png';
-import PushNotification from 'react-native-push-notification';
+import emptyImage from '../assets/images/emptybox.png';
 
 const HomeScreen = ({navigation}: HomeScreenNavProps) => {
   const theme = useColorScheme();
@@ -180,6 +179,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: 'transparent',
   },
   emptyImage: {
     width: 350,

@@ -9,6 +9,8 @@ import {store} from './src/redux/app/store';
 import {Provider} from 'react-redux';
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
 import PushNotification from 'react-native-push-notification';
+import {persistStore} from 'redux-persist';
+import {PersistGate} from 'redux-persist/integration/react';
 
 PushNotification.configure({
   // (optional) Called when Token is generated (iOS and Android)
@@ -71,9 +73,13 @@ PushNotification.createChannel(
   created => console.log(`createChannel returned '${created}'`), // (optional) callback returns whether the channel was created, false means it already existed.
 );
 
+let persistor = persistStore(store);
+
 const MyApp = () => (
   <Provider store={store}>
-    <App />
+    <PersistGate loading={null} persistor={persistor}>
+      <App />
+    </PersistGate>
   </Provider>
 );
 
