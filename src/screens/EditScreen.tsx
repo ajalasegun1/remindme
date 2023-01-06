@@ -1,4 +1,11 @@
-import {StyleSheet, View, Pressable, useColorScheme, Alert} from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Pressable,
+  useColorScheme,
+  Alert,
+  Platform,
+} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import MySafeContainer from '../components/MySafeContainer';
 import {RootStackParamList} from '../navigation/navTypes';
@@ -137,6 +144,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     // backgroundColor: 'teal',
+    paddingVertical: Platform.OS === 'android' ? 10 : 0,
   },
   header: {
     paddingHorizontal: 8,

@@ -6,6 +6,7 @@ import {
   useColorScheme,
   Modal,
   Alert,
+  Platform,
 } from 'react-native';
 import React, {useState, useRef, useEffect, useCallback} from 'react';
 import MySafeContainer from '../components/MySafeContainer';
@@ -273,7 +274,7 @@ const AddScreen = ({navigation}: AddScreenProps) => {
 export default AddScreen;
 
 const styles = StyleSheet.create({
-  container: {flex: 1},
+  container: {flex: 1, paddingVertical: Platform.OS === 'android' ? 10 : 0},
   header: {
     paddingHorizontal: 8,
     flexDirection: 'row',
