@@ -48,13 +48,23 @@ const EditScreen = ({navigation, route}: EditScreenProps) => {
   };
 
   const handleMark = () => {
-    if (notification?.done) {
-      dispatch(toggleMarkAsDone(notification_id));
-      Alert.alert('Reminder has been marked as undone');
-    } else {
-      dispatch(toggleMarkAsDone(notification_id));
-      Alert.alert('Reminder has been marked as done');
-    }
+    Alert.alert(
+      'Caution',
+      'If you mark this reminder as done, this reminder alert will be cancelled',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {text: 'Continue', onPress: () => handleMarkAsDone()},
+      ],
+    );
+  };
+
+  const handleMarkAsDone = () => {
+    dispatch(toggleMarkAsDone(notification_id));
+    PushNotification.cancelLocalNotification(notification_id);
+    Alert.alert('Reminder has been marked as done');
   };
 
   const handlePinned = () => {
@@ -118,14 +128,18 @@ const EditScreen = ({navigation, route}: EditScreenProps) => {
         <MyText style={styles.body}>{notification?.body}</MyText>
       </View>
       <View style={{paddingHorizontal: 8}}>
-        <Pressable
-          style={[styles.btn, {backgroundColor: 'teal'}]}
-          onPress={() => handleMark()}>
-          <MyText style={{fontSize: 16, fontWeight: '600', color: 'white'}}>
-            {notification?.done ? 'Mark as undone' : 'Mark as done'}
-          </MyText>
-        </Pressable>
-        <View style={{height: 10}} />
+        {!notification?.done && (
+          <>
+            <Pressable
+              style={[styles.btn, {backgroundColor: 'teal'}]}
+              onPress={() => handleMark()}>
+              <MyText style={{fontSize: 16, fontWeight: '600', color: 'white'}}>
+                {notification?.done ? 'Mark as undone' : 'Mark as done'}
+              </MyText>
+            </Pressable>
+            <View style={{height: 10}} />
+          </>
+        )}
         <Pressable
           style={[styles.btn, {backgroundColor: '#e30000'}]}
           onPress={() => handleDelete()}>

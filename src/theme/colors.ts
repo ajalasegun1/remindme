@@ -15,8 +15,8 @@ export const light = {
 };
 
 export const bgColors = {
-  one: '#EEB76B',
+  one: '#007FFF',
   two: '#E2703A',
   three: '#9C3D54',
-  four: '#310B0B',
+  four: '#FF00BF',
 };

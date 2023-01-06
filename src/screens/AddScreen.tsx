@@ -1,6 +1,5 @@
 import {
   StyleSheet,
-  Text,
   View,
   Pressable,
   useColorScheme,
@@ -46,22 +45,19 @@ const AddScreen = ({navigation}: AddScreenProps) => {
   const [openTime, setOpenTime] = useState(false);
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
+  const [options] = useState<string[]>(['once', 'hourly', 'daily', 'weekly']);
+  const [selectedOption, setSelectedOption] = useState<string>('once');
   const dispatch = useDispatch();
 
   useEffect(() => {
     titleRef.current?.focus();
   }, []);
 
-  PushNotification.getChannels(function (channel_ids) {
-    console.log({channel_ids}); // ['channel_id_1']
-  });
-
   const createNotification = () => {
-    // console.log('I was fired!!!');
-
     compareDates();
     const notification_id = Math.floor(Math.random() * 50000).toString();
     const id = nanoid();
+    const repeat = getRepitition(selectedOption);
     if (!compareDates()) return Alert.alert('You have to select a future date');
     const accurateDate = getAccurateDate();
     PushNotification.localNotificationSchedule({
@@ -72,6 +68,7 @@ const AddScreen = ({navigation}: AddScreenProps) => {
       message: title, // (required)
       date: accurateDate,
       userInfo: {notification_id},
+      repeatType: repeat,
 
       /* Android Only Properties */
       repeatTime: 1, // (optional) Increment of configured repeatType. Check 'Repeating Notifications' section for more info.
@@ -87,6 +84,7 @@ const AddScreen = ({navigation}: AddScreenProps) => {
       pinned,
       backgroundColor: color,
       done: false,
+      repeat: selectedOption,
     };
     dispatch(addReminder(payload));
     setShowModal(false);
@@ -109,6 +107,19 @@ const AddScreen = ({navigation}: AddScreenProps) => {
     maindate.setSeconds(0);
     return maindate;
   }, [date, time]);
+
+  const getRepitition = (type: string) => {
+    switch (type) {
+      case 'hourly':
+        return 'hour';
+      case 'daily':
+        return 'day';
+      case 'weekly':
+        return 'week';
+      case 'once':
+        return undefined;
+    }
+  };
 
   const compareDates = () => {
     // console.log(dayjs().isBefore(dayjs(getAccurateDate())));
@@ -225,6 +236,37 @@ const AddScreen = ({navigation}: AddScreenProps) => {
               </MyLayerView>
             </Pressable>
             <View style={{height: 40}} />
+            <MyText style={styles.repeat}>Repeat Notification</MyText>
+            <View style={styles.optionsHolder}>
+              {options.map(item => (
+                <Pressable
+                  style={
+                    selectedOption === item
+                      ? styles.selected
+                      : {
+                          paddingHorizontal: 10,
+                          paddingVertical: 4,
+                          borderRadius: 4,
+                          backgroundColor: isDark ? dark.layer2 : light.layer2,
+                        }
+                  }
+                  key={item}
+                  onPress={() => setSelectedOption(item)}>
+                  <MyText
+                    style={{
+                      color:
+                        selectedOption === item
+                          ? 'white'
+                          : isDark
+                          ? dark.primaryText
+                          : light.primaryText,
+                    }}>
+                    {item}
+                  </MyText>
+                </Pressable>
+              ))}
+            </View>
+            <View style={{height: 40}} />
             <View style={styles.modalFooter}>
               <Pressable onPress={() => setShowModal(false)}>
                 <MyText style={styles.cancel}>Close</MyText>
@@ -288,8 +330,9 @@ const styles = StyleSheet.create({
     // backgroundColor: 'green',
     fontSize: 25,
     fontFamily: 'Jost',
-    fontWeight: '600',
+    fontWeight: '700',
     paddingHorizontal: 8,
+    paddingVertical: 0,
   },
   bodyInput: {
     marginHorizontal: 8,
@@ -297,9 +340,10 @@ const styles = StyleSheet.create({
     // backgroundColor: 'green',
     fontSize: 16,
     fontFamily: 'Jost',
-    fontWeight: '500',
+    fontWeight: '700',
     paddingHorizontal: 8,
     textAlignVertical: 'top',
+    paddingVertical: 0,
   },
   footer: {
     height: 100,
@@ -364,7 +408,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0,0,0,0.5)',
   },
   modalContent: {
-    height: HEIGHT / 3,
+    // height: HEIGHT / 3,
     width: '90%',
     // backgroundColor: 'green',
     borderRadius: 15,
@@ -409,5 +453,23 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     fontSize: 22,
     marginBottom: 20,
+  },
+  repeat: {
+    fontWeight: '700',
+    fontSize: 20,
+    marginBottom: 8,
+  },
+  optionsHolder: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    width: '100%',
+    marginTop: 10,
+  },
+  selected: {
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: 4,
+    backgroundColor: 'teal',
   },
 });

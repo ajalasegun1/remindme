@@ -40,6 +40,19 @@ const Done = () => {
           {item.body}
         </MyText>
 
+        <MyText style={{marginBottom: 8, color: 'white'}}>
+          Repeat -{' '}
+          <MyText
+            style={{
+              fontWeight: '700',
+              color: 'white',
+              textTransform: 'capitalize',
+            }}>
+            {' '}
+            {item.repeat}
+          </MyText>
+        </MyText>
+
         <MyText style={[styles.timeContainer, {borderColor: 'white'}]}>
           {dayjs(item.date).format('MMM DD')}, {dayjs(item.time).format('H:mm')}
         </MyText>
@@ -73,7 +86,7 @@ const styles = StyleSheet.create({
   },
   text: {
     textTransform: 'uppercase',
-    fontWeight: '600',
+    fontWeight: '700',
     textAlign: 'center',
     marginVertical: 10,
   },
@@ -85,7 +98,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 20,
-    fontWeight: '600',
+    fontWeight: '700',
     color: 'white',
   },
   body: {

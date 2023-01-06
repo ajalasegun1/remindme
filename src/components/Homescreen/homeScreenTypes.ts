@@ -20,6 +20,7 @@ export type RemindersItemType = {
   pinned: boolean;
   backgroundColor: string;
   done: boolean;
+  repeat: string;
 };
 
 export type ReminderListType = Array<{
@@ -32,6 +33,7 @@ export type ReminderListType = Array<{
   pinned: boolean;
   backgroundColor: string;
   done: boolean;
+  repeat: string;
 }>;
 
 export type EditScreenPropsType = {

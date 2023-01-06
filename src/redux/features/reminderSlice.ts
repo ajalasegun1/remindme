@@ -11,6 +11,7 @@ export type ReminderState = Array<{
   pinned: boolean;
   backgroundColor: string;
   done: boolean;
+  repeat: string;
 }>;
 
 export type PayloadType = {
@@ -23,6 +24,7 @@ export type PayloadType = {
   pinned: boolean;
   backgroundColor: string;
   done: boolean;
+  repeat: string;
 };
 
 export type MarkType = string;
