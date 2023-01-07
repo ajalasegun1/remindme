@@ -1,4 +1,4 @@
-package com.remindme;
+package com.remindme.segunajala;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
