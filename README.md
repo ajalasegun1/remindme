@@ -1,3 +1,7 @@
+
+# google play store link
+https://play.google.com/store/apps/details?id=com.remindme.segunajala
+
 # remindme
 
 A react-native reminder app that uses typescript, redux-toolkit, async-storage and react-native-push-notification.
