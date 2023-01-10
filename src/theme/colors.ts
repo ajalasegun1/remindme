@@ -17,6 +17,6 @@ export const light = {
 export const bgColors = {
   one: '#007FFF',
   two: '#E2703A',
-  three: '#9C3D54',
+  three: '#6D67E4',
   four: '#FF00BF',
 };

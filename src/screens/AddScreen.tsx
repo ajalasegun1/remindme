@@ -22,7 +22,7 @@ import MyLayerView from '../components/MyLayerView';
 import MyText from '../components/MyText';
 import DatePicker from 'react-native-date-picker';
 import dayjs from 'dayjs';
-import PushNotification from 'react-native-push-notification';
+import PushNotification, {Importance} from 'react-native-push-notification';
 import {nanoid} from '@reduxjs/toolkit';
 import {addReminder} from '../redux/features/reminderSlice';
 import {useDispatch} from 'react-redux';
@@ -51,6 +51,9 @@ const AddScreen = ({navigation}: AddScreenProps) => {
 
   useEffect(() => {
     titleRef.current?.focus();
+    PushNotification.getScheduledLocalNotifications(data =>
+      console.log({data}),
+    );
   }, []);
 
   const createNotification = () => {
@@ -68,6 +71,8 @@ const AddScreen = ({navigation}: AddScreenProps) => {
       message: title, // (required)
       date: accurateDate,
       userInfo: {notification_id},
+      importance: 'high',
+      allowWhileIdle: true,
       repeatType: repeat,
 
       /* Android Only Properties */
