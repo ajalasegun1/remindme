@@ -147,9 +147,9 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   timeContainer: {
-    borderColor: '#d3d3d3',
-    borderWidth: 1,
-    width: '60%',
+    // borderColor: '#d3d3d3',
+    // borderWidth: 1,
+    // width: '60%',
     padding: 3,
     borderRadius: 6,
     color: 'white',
