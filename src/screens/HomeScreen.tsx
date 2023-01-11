@@ -62,9 +62,22 @@ const HomeScreen = ({navigation}: HomeScreenNavProps) => {
           </MyText>
         </MyText>
 
-        <MyText style={[styles.timeContainer, {borderColor: 'white'}]}>
-          {dayjs(item.date).format('MMM DD')}, {dayjs(item.time).format('H:mm')}
-        </MyText>
+        <View style={styles.dateTimeHolder}>
+          <>
+            <Ionicons name="ios-calendar" size={14} color="white" />
+            <MyText style={[styles.timeContainer]}>
+              {dayjs(item.date).format('MMM DD')}
+            </MyText>
+          </>
+          <View style={{width: 10}} />
+          <>
+            <Ionicons name="ios-time" size={14} color="white" />
+
+            <MyText style={styles.timeContainer2}>
+              {dayjs(item.time).format('H:mm')}
+            </MyText>
+          </>
+        </View>
       </View>
     </Pressable>
   );
@@ -147,12 +160,13 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   timeContainer: {
-    // borderColor: '#d3d3d3',
-    // borderWidth: 1,
-    // width: '60%',
-    padding: 3,
-    borderRadius: 6,
     color: 'white',
+    marginLeft: 5,
+  },
+  timeContainer2: {
+    color: 'white',
+    fontWeight: '700',
+    marginLeft: 3,
   },
   add: {
     position: 'absolute',
@@ -184,5 +198,9 @@ const styles = StyleSheet.create({
   emptyImage: {
     width: 350,
     height: 350,
+  },
+  dateTimeHolder: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 });

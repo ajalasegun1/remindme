@@ -4,19 +4,19 @@ import {
   useColorScheme,
   View,
   FlatList,
-  Text,
   Pressable,
 } from 'react-native';
 import React from 'react';
 import MyText from '../MyText';
-import {bgColors, dark, light} from '../../theme/colors';
-import {ItemType, RemindersItemType} from './homeScreenTypes';
+import {dark, light} from '../../theme/colors';
+import {RemindersItemType} from './homeScreenTypes';
 import dayjs from 'dayjs';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../redux/app/store';
 import {useNavigation} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {RootStackParamList} from '../../navigation/navTypes';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 type NavigationType = StackNavigationProp<RootStackParamList, 'EditScreen'>;
 
@@ -46,9 +46,22 @@ const Pinned = () => {
           <MyText style={{fontWeight: '700', color: 'white'}}>Once</MyText>
         </MyText>
 
-        <MyText style={[styles.timeContainer, {borderColor: 'white'}]}>
-          {dayjs(item.date).format('MMM DD')}, {dayjs(item.time).format('H:mm')}
-        </MyText>
+        <View style={styles.dateTimeHolder}>
+          <>
+            <Ionicons name="ios-calendar" size={14} color="white" />
+            <MyText style={[styles.timeContainer]}>
+              {dayjs(item.date).format('MMM DD')}
+            </MyText>
+          </>
+          <View style={{width: 10}} />
+          <>
+            <Ionicons name="ios-time" size={14} color="white" />
+
+            <MyText style={styles.timeContainer2}>
+              {dayjs(item.time).format('H:mm')}
+            </MyText>
+          </>
+        </View>
       </View>
     </Pressable>
   );
@@ -99,11 +112,17 @@ const styles = StyleSheet.create({
     color: 'white',
   },
   timeContainer: {
-    borderColor: '#d3d3d3',
-    borderWidth: 1,
-    width: '60%',
-    padding: 3,
     borderRadius: 6,
     color: 'white',
+    marginLeft: 5,
+  },
+  timeContainer2: {
+    color: 'white',
+    fontWeight: '700',
+    marginLeft: 3,
+  },
+  dateTimeHolder: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 });
